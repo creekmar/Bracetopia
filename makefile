@@ -1,5 +1,5 @@
 #
-# Created by gmakemake (Ubuntu Jul 25 2014) on Wed Feb 23 00:15:50 2022
+# Created by gmakemake (Ubuntu Jul 25 2014) on Wed Feb 23 03:43:08 2022
 #
 
 #
@@ -51,13 +51,13 @@ CLIBFLAGS =	-lm  -lcurses
 
 
 CPP_FILES =	
-C_FILES =	bracetopia.c
+C_FILES =	bracetopia.c movements.c
 PS_FILES =	
 S_FILES =	
-H_FILES =	
+H_FILES =	movements.h
 SOURCEFILES =	$(H_FILES) $(CPP_FILES) $(C_FILES) $(S_FILES)
 .PRECIOUS:	$(SOURCEFILES)
-OBJFILES =	
+OBJFILES =	movements.o 
 
 #
 # Main targets
@@ -72,7 +72,8 @@ bracetopia:	bracetopia.o $(OBJFILES)
 # Dependencies
 #
 
-bracetopia.o:	
+bracetopia.o:	movements.h
+movements.o:	
 
 #
 # Housekeeping

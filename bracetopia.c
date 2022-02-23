@@ -15,6 +15,7 @@
 #include <getopt.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include "movements.h"
 
 /// struct game_state   holds values that define the game
 /// size                dimensions of the board
@@ -142,5 +143,39 @@ int main(int argc, char* argv[]) {
             return EXIT_FAILURE;
         }
     }
+
+    //initialize array of specific percentage of agents and vacancies
+    int size = sim.size*sim.size;
+    char contents[size];
+    int vacant = size*sim.vacancy/100;
+    int endline = (size-vacant)*sim.end/100;
+    for(int i = 0; i < size; i++){
+        if(i < vacant)
+            contents[i] = '.';
+        else if(i < (vacant+endline))
+            contents[i] = 'e';
+        else
+            contents[i] = 'n';
+    }
+
+    //shuffle array and put into simulation grid
+    shuffle(size, contents);
+    char bracetopia[sim.size][sim.size];
+    int count = 0;
+    for(int i = 0; i < sim.size; i++) {
+        for(int j = 0; j < sim.size; j++) {
+            bracetopia[i][j] = contents[count];
+            count++;
+        }
+    }
+
+    //print out grid
+    for(int i = 0; i < sim.size; i++) {
+        for(int j = 0; j < sim.size; j++) {
+            printf("%c", bracetopia[i][j]);
+        }
+        printf("\n");
+    }
+
     printf("Main ends here\n");
 }
