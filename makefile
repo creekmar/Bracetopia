@@ -1,5 +1,5 @@
 #
-# Created by gmakemake (Ubuntu Jul 25 2014) on Mon Feb 21 23:45:34 2022
+# Created by gmakemake (Ubuntu Jul 25 2014) on Wed Feb 23 00:15:50 2022
 #
 
 #
@@ -51,7 +51,7 @@ CLIBFLAGS =	-lm  -lcurses
 
 
 CPP_FILES =	
-C_FILES =	use_getopt.c
+C_FILES =	bracetopia.c
 PS_FILES =	
 S_FILES =	
 H_FILES =	
@@ -63,16 +63,16 @@ OBJFILES =
 # Main targets
 #
 
-all:	use_getopt 
+all:	bracetopia 
 
-use_getopt:	use_getopt.o $(OBJFILES)
-	$(CC) $(CFLAGS) -o use_getopt use_getopt.o $(OBJFILES) $(CLIBFLAGS)
+bracetopia:	bracetopia.o $(OBJFILES)
+	$(CC) $(CFLAGS) -o bracetopia bracetopia.o $(OBJFILES) $(CLIBFLAGS)
 
 #
 # Dependencies
 #
 
-use_getopt.o:	
+bracetopia.o:	
 
 #
 # Housekeeping
@@ -84,7 +84,7 @@ archive.tgz:	$(SOURCEFILES) Makefile
 	tar cf - $(SOURCEFILES) Makefile | gzip > archive.tgz
 
 clean:
-	-/bin/rm -f $(OBJFILES) use_getopt.o core
+	-/bin/rm -f $(OBJFILES) bracetopia.o core
 
 realclean:        clean
-	-/bin/rm -f use_getopt 
+	-/bin/rm -f bracetopia 

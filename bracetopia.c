@@ -6,7 +6,11 @@
 // @author Ming Creekmore mec5765
 // // // // // // // // // // // // // // // // // // // // // // // // //
 
+#define _DEFAULT_SOURCE
 
+#include <unistd.h>
+#include <time.h>
+#include <string.h>
 #include <stdio.h>
 #include <getopt.h>
 #include <stdlib.h>
@@ -28,6 +32,17 @@ struct sim_state {
     bool infinite;
 };
 
+/// print_error: prints the usage message if bad value
+///
+/// type         the flag type/variable in sim_state mistyped
+/// input        the value inputted
+/// num_usage    the type of values expected
+void print_error(char* type, int input, char* num_usage) {
+    fprintf(stderr, "%s (%d) must be a %s\n", type, input, num_usage);
+    fprintf(stderr, "usage: \nbracetopia [-h] [-t N] [-c N] ");
+    fprintf(stderr, "[-d dim] [-s %%str] [-v %%vac] [-e %%end]\n");
+}
+
 /// main: starts the simulation
 ///
 /// @param argc     the number of arguments
@@ -42,37 +57,72 @@ int main(int argc, char* argv[]) {
     sim.infinite = 1;
 
     while((opt = getopt(argc, argv, "ht:c:d:s:v:e:")) != -1) {
+        int tmp;
         switch(opt){
         case 'h': //help command
+            printf("help function\n");
+            return EXIT_SUCCESS;
             break;
         case 't': //edit update time if > 0
-            sim.delay = (int)strtol(optarg, NULL, 10);
+            tmp = (int)strtol(optarg, NULL, 10);
+            if(tmp > 0)
+                sim.delay = tmp;
             printf("Time delay is %d\n", sim.delay);
             break;
         case 'c': //only display numcycles given
-            numcycles = (int)strtol(optarg, NULL, 10);
+            tmp = (int)strtol(optarg, NULL, 10);
+            if(tmp >= 0)
+                numcycles = tmp;
+            else {
+                print_error("count", tmp, "non-negative integer.");
+                return 1 + EXIT_FAILURE;
+            }
             printf("Numcycles is %d\n", numcycles);
             break;
-        case 'd':
-            sim.size = (int)strtol(optarg, NULL, 10);
+        case 'd': //dimension of simulation
+            tmp = (int)strtol(optarg, NULL, 10);
+            if(tmp > 4 && tmp < 40)
+                sim.size = tmp;
+            else {
+                print_error("dimension", tmp, "value in [5...39]");
+                return 1 + EXIT_FAILURE;
+            }
             printf("Dimensions are %d\n", sim.size);
             break;
-        case 's':
-            sim.strength = (int)strtol(optarg, NULL, 10);
+        case 's': //percent strength of preference
+            tmp = (int)strtol(optarg, NULL, 10);
+            if(tmp > 0 && tmp < 100)
+                sim.strength = tmp;
+            else {
+                print_error("preference strength", tmp, "value in [1...99]");
+                return 1 + EXIT_FAILURE;
+            }
             printf("Strength of preference is %d\n", sim.strength);
             break;
-        case 'v':
-            sim.vacancy = (int)strtol(optarg, NULL, 10);
+        case 'v': //percent vacant
+            tmp = (int)strtol(optarg, NULL, 10);
+            if(tmp > 0 && tmp < 100)
+                sim.vacancy = tmp;
+            else {
+                print_error("vacancy", tmp, "value in [1...99]");
+                return 1 + EXIT_FAILURE;
+            }
             printf("Vacancy is %d\n", sim.vacancy);
             break;
-        case 'e':
-            sim.end = (int)strtol(optarg, NULL, 10);
+        case 'e': //percent that prefer endline
+            tmp = (int)strtol(optarg, NULL, 10);
+            if(tmp > 0 && tmp < 100)
+                sim.end = tmp;
+            else {
+                print_error("endline proportion", tmp, "value in [1...99]");
+                return 1 + EXIT_FAILURE;
+            }
             printf("Percent with endline preference is %d\n", sim.end);
             break;
-        default:
+        default: // not correct flag
             fprintf(stderr, "usage:\nbracetopia [-h] [-t N] [-c N] ");
             fprintf(stderr, "[-d dim] [-s %%str] [-v %%vac] [-e %%end]\n");
-            return(EXIT_FAILURE);
+            return EXIT_FAILURE;
         }
     }
     printf("Main ends here\n");
