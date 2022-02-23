@@ -52,7 +52,7 @@ void print_error(char* type, int input, char* num_usage) {
 int main(int argc, char* argv[]) {
     int opt;
     //default game_state values
-    struct sim_state sim = {7, 30, 30, 75, 5000, 1};
+    struct sim_state sim = {15, 50, 20, 60, 900000, 1};
     int numcycles;
     sim.infinite = 1;
 
@@ -60,7 +60,24 @@ int main(int argc, char* argv[]) {
         int tmp;
         switch(opt){
         case 'h': //help command
-            printf("help function\n");
+            fprintf(stderr, "usage: \nbracetopia [-h] [-t N] [-c N] ");
+            fprintf(stderr, "[-d dim] [-s %%str] [-v %%vac] [-e %%end]\n");
+            fprintf(stderr, "%-12s%-10s%-10s%s\n", "Option", "Default",
+                   "Example", "Description");
+            fprintf(stderr, "%-12s%-10s%-10s%s\n", "'-h'", "NA", "-h",
+                   "print this usage message.");
+            fprintf(stderr, "%-12s%-10s%-10s%s\n", "'-t N'", "900000",
+                   "-t 5000", "microseconds cycle delay.");
+            fprintf(stderr, "%-12s%-10s%-10s%s\n", "'-c N'", "NA", "-c4",
+                   "count cycle maximum value.");
+            fprintf(stderr, "%-12s%-10s%-10s%s\n", "'-d dim'", "15", "-d 7",
+                   "width and height dimension.");
+            fprintf(stderr, "%-12s%-10s%-10s%s\n", "'-s %str'", "50",
+                   "-s 30", "strength of preference.");
+            fprintf(stderr, "%-12s%-10s%-10s%s\n", "'-v %vac'", "20", 
+                   "-v30", "percent vacancies.");
+            fprintf(stderr, "%-12s%-10s%-10s%s\n", "'-e %endl'", "60",
+                   "-e75", "percent Endline braces. Others want Newline.");
             return EXIT_SUCCESS;
             break;
         case 't': //edit update time if > 0
