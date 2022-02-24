@@ -20,4 +20,16 @@
 /// @param sim          the array to shuffle
 void shuffle(int size, char* sim);
 
+/// move: moves unhappy agents to the next available vacant spot
+///
+/// @param sim_size     dimension of simulation
+/// @param sim          simulation of agents in a grid-life form
+/// @param hap_size     size of unhappy array
+/// @param unhappy      array of coordinates of unhappy agents
+/// @param vac_size     size of vacant array
+/// @param vac          array of coordinates of vacant spots
+/// @return             number of moves made
+int move(int sim_size, char sim[][sim_size], int hap_size, struct coor unhappy[], int vac_size, struct coor vac[]);
+
+
 #endif
