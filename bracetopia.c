@@ -16,6 +16,8 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "movements.h"
+#include "measure.h"
+#include "definition.h"
 
 /// struct game_state   holds values that define the game
 /// size                dimensions of the board
@@ -149,6 +151,8 @@ int main(int argc, char* argv[]) {
     char contents[size];
     int vacant = size*sim.vacancy/100;
     int endline = (size-vacant)*sim.end/100;
+    struct coor happy[(size-vacant)];
+    struct coor vac[vacant];
     for(int i = 0; i < size; i++){
         if(i < vacant)
             contents[i] = '.';
@@ -176,6 +180,8 @@ int main(int argc, char* argv[]) {
         }
         printf("\n");
     }
+
+    printf("Happiness: %g", happiness(sim.size, size-vacant, bracetopia, happy, vac, sim.strength));
 
     printf("Main ends here\n");
 }

@@ -2,3 +2,5 @@ bracetopia.o
 measure
 bracetopia
 examples*
+measure.o
+movements.o

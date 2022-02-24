@@ -11,6 +11,8 @@
 
 #ifndef MOVEMENTS_H
 #define MOVEMENTS_H
+#include <stdlib.h>
+#include "definition.h"
 
 /// shuffle: shuffles an array
 ///

@@ -9,12 +9,9 @@
 // // // // // // // // // // // // // // // // // // // // //
 
 #define _DEFAULT_SOURCE
-#include <stdlib.h>
+#include "movements.h"
 
-/// shuffle        randomizes an array
-///
-/// @param size    the size of array
-/// @param sim     the array to randomize
+/// shuffle function randomizes an array
 void shuffle(int size, char* sim){
     for(int i = size-1; i > 0; i--){
         int j = rand();
