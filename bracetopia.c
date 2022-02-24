@@ -2,7 +2,8 @@
 // bracetopia is a program that implements a simulator on where agents sit
 // in an office and calculates their happiness based on the people sitting
 // next to them and whether those other people have the same bracket 
-// preferences
+// preferences 
+//
 // @author Ming Creekmore mec5765
 // // // // // // // // // // // // // // // // // // // // // // // // //
 
@@ -15,6 +16,7 @@
 #include <getopt.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <ncurses.h>
 #include "movements.h"
 #include "measure.h"
 #include "definition.h"
@@ -176,7 +178,7 @@ int main(int argc, char* argv[]) {
     //if print mode is selected
     if(sim.infinite == 0) {
         int num_moves = 0;
-        for(int i = 0; i <= numcycles; i++) {        
+        for(int k = 0; k <= numcycles; k++) {        
            
            //print out grid
             for(int i = 0; i < sim.size; i++) {
@@ -192,18 +194,52 @@ int main(int argc, char* argv[]) {
             struct happy_values hp = happiness(sim.size, size-vacant, bracetopia,
                               happy, vac, (double)sim.strength/100);
             //print cycle info
-            printf("cycle: %d\n", i);
+            printf("cycle: %d\n", k);
             printf("moves this cycle: %d\n", num_moves);
-            printf("teams' \" happiness \": %g\n", hp.happiness);
+            printf("teams' \"happiness\": %g\n", hp.happiness);
             printf("dim: %d, %%strength of preference: %d%%, %%vacancy: %d%%, ",
                    sim.size, sim.strength, sim.vacancy);
             printf("%%end: %d%%\n", sim.end);
             
             //move agents
-            num_moves = move(sim.size, bracetopia, hp.unhappy, happy, vacant, vac);
+            num_moves = smove(sim.size, bracetopia, hp.unhappy, happy, vacant, vac);
         }
     }
 
+    //if infinite mode
+    else {
+        initscr();
+        int num_moves;
+        int k = 0;
+        while(sim.infinite) {
+            move(0, 0);
+            for(int i = 0; i < sim.size; i++) {
+                for(int j = 0; j < sim.size; j++) {
+                    printw("%c", bracetopia[i][j]);
+                }
+                printw("\n");
+            }
 
+            struct coor happy[size-vacant];
+            struct coor vac[vacant];
+            struct happy_values hp = happiness(sim.size, size-vacant, bracetopia,
+                              happy, vac, (double)sim.strength/100);
+            move(sim.size, 0);
+            printw("cycle: %d\n", k);
+            printw("moves this cycle: %d\n", num_moves);
+            printw("teams' \"happiness\": %g\n", hp.happiness);
+            printw("dim: %d, %%strength of preference: %d%%, %%vacancy: %d%%, ",
+                   sim.size, sim.strength, sim.vacancy);
+            printw("%%end: %d%%\n", sim.end);
+            printw("Use Control-C to quit.");
+            refresh();
+            usleep(sim.delay);
+            k++;
+            num_moves = smove(sim.size, bracetopia, hp.unhappy, happy, vacant, vac);
+        }
+
+        endwin();
+    }
     printf("Main ends here\n");
+    return EXIT_SUCCESS;
 }

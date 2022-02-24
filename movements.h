@@ -1,6 +1,6 @@
 //
 // File: movements.h
-// sim_movements.h is an interface for functions that manipulate
+// movements.h is an interface for functions that manipulate
 // a simulated environment for bracetopia
 //
 // @author Ming Creekmore mec5765
@@ -29,7 +29,7 @@ void shuffle(int size, char* sim);
 /// @param vac_size     size of vacant array
 /// @param vac          array of coordinates of vacant spots
 /// @return             number of moves made
-int move(int sim_size, char sim[][sim_size], int hap_size, struct coor unhappy[], int vac_size, struct coor vac[]);
+int smove(int sim_size, char sim[][sim_size], int hap_size, struct coor unhappy[], int vac_size, struct coor vac[]);
 
 
 #endif
