@@ -9,20 +9,23 @@
 // // // // // // // // // // // // // // // // // // // // // // //
 
 #include "measure.h"
+#include "movements.h"
+#include <stdio.h>
 
 int same = 0;
 int total = 0;
 
 /// happiness measures the happiness of each agent
-double happiness(int size, int hap_size, char sim[][size], struct coor unhap[], struct coor vac[], double pref) {
+struct happy_values happiness(int size, int hap_size, char sim[][size], struct coor unhap[], struct coor vac[], double pref) {
     int hap_count = 0;
     int unhap_count = 0;
     int vac_count = 0;
     double happy[hap_size];
     for(int i = 0; i < size; i++) {
         for(int j = 0; j < size; j++) {
+            //only check if the place is occupied
             if(sim[i][j] != '.'){
-                //check the neighbors left of the current grid
+                //check the neighbors above current grid
                 if(i != 0) {
                     checkvalue(sim[i][j], sim[i-1][j]);
                     if(j != 0) {
@@ -32,7 +35,7 @@ double happiness(int size, int hap_size, char sim[][size], struct coor unhap[], 
                         checkvalue(sim[i][j], sim[i-1][j+1]);
                     }
                 }
-                //check the neighbors right of the current grid
+                //check the neighbors below the current grid
                 if(i != size-1) {
                     checkvalue(sim[i][j], sim[i+1][j]);
                     if(j != 0) {
@@ -42,14 +45,14 @@ double happiness(int size, int hap_size, char sim[][size], struct coor unhap[], 
                         checkvalue(sim[i][j], sim[i+1][j+1]);
                     }
                 }
-                //check the box above the current one
+                //check the box right and left of the current one
                 if(j != 0) {
                     checkvalue(sim[i][j], sim[i][j-1]);
                 }
-                //check the box below the current one
                 if(j != size-1) {
                     checkvalue(sim[i][j], sim[i][j+1]);
                 }
+
                 //calculating happiness and adding to unhappy
                 if(total != 0) {
                     happy[hap_count] = (double) same/total;
@@ -63,7 +66,11 @@ double happiness(int size, int hap_size, char sim[][size], struct coor unhap[], 
                     happy[hap_count] = 1;
                 }
                 hap_count++;
+                //reset same and total for next neighbor
+                same = 0;
+                total = 0;
             }
+
             //if the spot is vacant
             else {
                 vac[vac_count].x = i;
@@ -73,8 +80,8 @@ double happiness(int size, int hap_size, char sim[][size], struct coor unhap[], 
 
         }//end of first for loop
     }//end of second for loop
-
-    return average(hap_count, happy);
+    struct happy_values values = {average(hap_count, happy), unhap_count};
+    return values;
                 
                 
 
@@ -83,8 +90,9 @@ double happiness(int size, int hap_size, char sim[][size], struct coor unhap[], 
 /// checkvalue function updates the stats of happiness depending on the neighbor
 void checkvalue(char og, char neigh) {
     if(neigh != '.') {
-        if(og == neigh)
+        if(og == neigh) {
             same++;
+        }
         total++;
     }
 }

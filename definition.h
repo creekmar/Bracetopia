@@ -19,4 +19,12 @@ struct coor {
     int y;
 };
 
+/// struct happy   values calculated by happiness function
+/// happiness      the average happiness    
+/// num_unhappy    the number of agents unhappy
+struct happy_values {
+    double happiness;
+    int unhappy;
+};
+
 #endif

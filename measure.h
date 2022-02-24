@@ -23,7 +23,7 @@
 /// @param vac        array of coordinates of vacant spots
 /// @param pref       the strength of preference for similar agents nearby
 /// @return           the average happiness
-double happiness(int size, int hap_size, char sim[][size], struct coor unhap[], struct coor vac[], double pref);
+struct happy_values happiness(int size, int hap_size, char sim[][size], struct coor unhap[], struct coor vac[], double pref);
 
 /// checkvalue: checks whether the neighbor has the same alignment as 
 ///             the agent we are checking, updating the stats

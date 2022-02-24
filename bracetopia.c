@@ -59,6 +59,7 @@ int main(int argc, char* argv[]) {
     int numcycles;
     sim.infinite = 1;
 
+    //taking in optional arguments
     while((opt = getopt(argc, argv, "ht:c:d:s:v:e:")) != -1) {
         int tmp;
         switch(opt){
@@ -97,6 +98,7 @@ int main(int argc, char* argv[]) {
                 print_error("count", tmp, "non-negative integer.");
                 return 1 + EXIT_FAILURE;
             }
+            sim.infinite = 0;
             printf("Numcycles is %d\n", numcycles);
             break;
         case 'd': //dimension of simulation
@@ -151,8 +153,6 @@ int main(int argc, char* argv[]) {
     char contents[size];
     int vacant = size*sim.vacancy/100;
     int endline = (size-vacant)*sim.end/100;
-    struct coor happy[(size-vacant)];
-    struct coor vac[vacant];
     for(int i = 0; i < size; i++){
         if(i < vacant)
             contents[i] = '.';
@@ -173,15 +173,37 @@ int main(int argc, char* argv[]) {
         }
     }
 
-    //print out grid
-    for(int i = 0; i < sim.size; i++) {
-        for(int j = 0; j < sim.size; j++) {
-            printf("%c", bracetopia[i][j]);
+    //if print mode is selected
+    if(sim.infinite == 0) {
+        int num_moves = 0;
+        for(int i = 0; i <= numcycles; i++) {        
+           
+           //print out grid
+            for(int i = 0; i < sim.size; i++) {
+                for(int j = 0; j < sim.size; j++) {
+                    printf("%c", bracetopia[i][j]);
+                }
+                printf("\n");
+            }
+
+            //calculate happiness
+            struct coor happy[size-vacant];
+            struct coor vac[vacant];
+            struct happy_values hp = happiness(sim.size, size-vacant, bracetopia,
+                              happy, vac, (double)sim.strength/100);
+            //print cycle info
+            printf("cycle: %d\n", i);
+            printf("moves this cycle: %d", num_moves);
+            printf("teams' \" happiness \": %g\n", hp.happiness);
+            printf("dim: %d, %%strength of preference: %d%%, %%vacancy: %d%%, ",
+                   sim.size, sim.strength, sim.vacancy);
+            printf("%%end: %d%%\n", sim.end);
+            
+            //move agents
+           // num_moves = move(sim.size, bracetopia, hp.unhappy, happy, vacant, vac);
         }
-        printf("\n");
     }
 
-    printf("Happiness: %g", happiness(sim.size, size-vacant, bracetopia, happy, vac, sim.strength));
 
     printf("Main ends here\n");
 }
