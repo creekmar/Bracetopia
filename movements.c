@@ -28,8 +28,9 @@ void shuffle(int size, char* sim){
 /// goes until there are no more vacant spots or there are no more unhappy agents
 int move(int sim_size, char sim[][sim_size], int hap_size, struct coor unhappy[], int vac_size, struct coor vac[]) {
     int num_moves = 0;
-    while(num_moves < hap_size || num_moves < vac_size) {
+    while(num_moves < hap_size && num_moves < vac_size) {
         sim[vt.x][vt.y] = sim[uh.x][uh.y];
+        sim[uh.x][uh.y] = '.';
         num_moves++;
     }
     return num_moves;

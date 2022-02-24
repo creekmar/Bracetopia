@@ -193,14 +193,14 @@ int main(int argc, char* argv[]) {
                               happy, vac, (double)sim.strength/100);
             //print cycle info
             printf("cycle: %d\n", i);
-            printf("moves this cycle: %d", num_moves);
+            printf("moves this cycle: %d\n", num_moves);
             printf("teams' \" happiness \": %g\n", hp.happiness);
             printf("dim: %d, %%strength of preference: %d%%, %%vacancy: %d%%, ",
                    sim.size, sim.strength, sim.vacancy);
             printf("%%end: %d%%\n", sim.end);
             
             //move agents
-           // num_moves = move(sim.size, bracetopia, hp.unhappy, happy, vacant, vac);
+            num_moves = move(sim.size, bracetopia, hp.unhappy, happy, vacant, vac);
         }
     }
 

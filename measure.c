@@ -10,7 +10,6 @@
 
 #include "measure.h"
 #include "movements.h"
-#include <stdio.h>
 
 int same = 0;
 int total = 0;
