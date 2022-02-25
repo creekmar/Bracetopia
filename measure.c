@@ -9,7 +9,6 @@
 // // // // // // // // // // // // // // // // // // // // // // //
 
 #include "measure.h"
-#include "movements.h"
 
 int same = 0;
 int total = 0;
@@ -20,9 +19,10 @@ struct happy_values happiness(int size, int hap_size, char sim[][size], struct c
     int unhap_count = 0;
     int vac_count = 0;
     double happy[hap_size];
+    //for each agent check the neighbors
     for(int i = 0; i < size; i++) {
         for(int j = 0; j < size; j++) {
-            //only check if the place is occupied
+            //if the place is occupied
             if(sim[i][j] != '.'){
                 //check the neighbors above current grid
                 if(i != 0) {
@@ -65,6 +65,7 @@ struct happy_values happiness(int size, int hap_size, char sim[][size], struct c
                     happy[hap_count] = 1;
                 }
                 hap_count++;
+
                 //reset same and total for next neighbor
                 same = 0;
                 total = 0;
@@ -79,11 +80,9 @@ struct happy_values happiness(int size, int hap_size, char sim[][size], struct c
 
         }//end of first for loop
     }//end of second for loop
+
     struct happy_values values = {average(hap_count, happy), unhap_count};
     return values;
-                
-                
-
 }
 
 /// checkvalue function updates the stats of happiness depending on the neighbor
